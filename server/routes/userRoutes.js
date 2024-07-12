@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middleware/authmiddleware')
 
 router.post("/register", async (req, res) => {
     try{
@@ -61,5 +62,22 @@ router.post("/login", async (req, res) => {
 })
 });
 
+//Bearer --> for authentication of user
+router.get('/get-current-user', authMiddleware, async(req, res) => {
+    try{
+        const user = await User.findById(req.body.userId).select('-password');
+        res.send({
+            message: true,
+            message: "You are Authorized",
+            data: user
+        })
+    }
+    catch(error){
+        res.send({
+            message: false,
+            message: "You not are Authorized"
+        })
+    }
+})
 
 module.exports = router;
