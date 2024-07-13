@@ -55,11 +55,13 @@ router.post("/login", async (req, res) => {
 
   const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: "1d"})
 
-  return res.send({
+  res.send({
     success: true,
     message: "Login Successful",
     token: token
 })
+
+
 });
 
 //Bearer --> for authentication of user
